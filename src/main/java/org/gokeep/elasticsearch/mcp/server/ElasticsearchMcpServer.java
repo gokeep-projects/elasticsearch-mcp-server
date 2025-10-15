@@ -91,7 +91,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             EN: search elasticsearch document by sql
             """)
     public ToolResponse sql(@ToolArg(description = "sql语句，用于elasticsearch查询") String sql) throws Exception {
-        HttpRequest request = buildRequest(Router.SQL, Map.of("sql", sql));
+        HttpRequest request = buildRequest(Router.SQL, Map.of("query", sql));
         String response = call(request);
         return ToolResponse.success(response);
     }
@@ -101,7 +101,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
      * DSL查询
      *
      * @param indexName 索引名
-     * @param query     DSL查询语句
+     * @param dsl     DSL查询语句
      * @return ToolResponse
      * @throws Exception 异常
      */
@@ -110,8 +110,8 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             EN: search elasticsearch document by dsl
             """)
     public ToolResponse search(@ToolArg(description = "索引名") String indexName,
-                               @ToolArg(description = "dsl查询语句") Map<String, Object> query) throws Exception {
-        HttpRequest request = buildRequest(Router.SEARCH, query, indexName);
+                               @ToolArg(description = "dsl查询语句") Map<String, Object> dsl) throws Exception {
+        HttpRequest request = buildRequest(Router.SEARCH, dsl, indexName);
         String response = call(request);
         return ToolResponse.success(response);
     }

@@ -25,7 +25,7 @@ public class McpServerConfig {
     /**
      * Content-Type
      */
-    public static final String CONTENT_TYPE_JSON = "application/json";
+    public static final String CONTENT_TYPE_HEADER = "Content-Type";
 
     /**
      * application/json

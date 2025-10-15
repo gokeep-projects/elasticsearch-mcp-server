@@ -13,7 +13,7 @@ public enum Router {
     /**
      * 获取所有索引
      */
-    LIST_INDICES(HttpMethod.POST, "/_cat/indices?format=json"),
+    LIST_INDICES(HttpMethod.GET, "/_cat/indices?format=json"),
     /**
      * 获取所有别名
      */

@@ -52,7 +52,7 @@ public class BasicAbstractMcpServer {
      */
     public HttpRequest.Builder defaultRequestBuilder() {
         return HttpRequest.newBuilder()
-                .header(CONTENT_TYPE_JSON, APPLICATION_JSON_UTF8_JSON)
+                .header(CONTENT_TYPE_HEADER, APPLICATION_JSON_UTF8_JSON)
                 .timeout(Duration.ofSeconds(DEFAULT_REQUEST_TIMEOUT));
     }
 
