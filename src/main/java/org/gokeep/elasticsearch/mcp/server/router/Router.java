@@ -29,7 +29,13 @@ public enum Router {
     /**
      * 通过SQL查询es文档
      */
-    SQL(HttpMethod.POST, "/_sql");
+    SQL(HttpMethod.POST, "/_sql"),
+
+    /**
+     * 根据索引ID查询文档
+     */
+    GET_BY_ID(HttpMethod.GET, "/%s/_doc/%s");
+    ;
 
 
     /**

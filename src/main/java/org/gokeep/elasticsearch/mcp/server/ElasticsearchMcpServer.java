@@ -101,7 +101,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
      * DSL查询
      *
      * @param indexName 索引名
-     * @param dsl     DSL查询语句
+     * @param dsl       DSL查询语句
      * @return ToolResponse
      * @throws Exception 异常
      */
@@ -112,6 +112,29 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
     public ToolResponse search(@ToolArg(description = "索引名") String indexName,
                                @ToolArg(description = "dsl查询语句") Map<String, Object> dsl) throws Exception {
         HttpRequest request = buildRequest(Router.SEARCH, dsl, indexName);
+        String response = call(request);
+        return ToolResponse.success(response);
+    }
+
+
+    /**
+     * 通过文档ID查询索引文档信息
+     *
+     * @param indexName 索引名
+     * @param id        文档ID
+     * @return ToolResponse 响应
+     * @throws Exception 异常
+     */
+    public ToolResponse getById(
+            @ToolArg(description = """
+                    CN: 索引名,
+                    EN: index name
+                    """) String indexName,
+            @ToolArg(description = """
+                    CN: 文档ID,
+                    EN: index document id
+                    """) String id) throws Exception {
+        HttpRequest request = buildRequest(Router.GET_BY_ID, indexName, id);
         String response = call(request);
         return ToolResponse.success(response);
     }
