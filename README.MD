@@ -1,17 +1,15 @@
-<div align="center">
-
-# 🔍 Elasticsearch MCP Server
-
-### <sup>高性能 • 低内存占用 •云原生支持 •Java版本的Elasticsearch MCP服务</sup>
+<p align="center">
+  <img src="https://www.elastic.co/favicon.svg" alt="elasticsearch-mcp-server" hight="15%" width="15%">
+</p>
+<h1 align="center">Elasticsearch MCP Server<h1>
+<h4 align="center">极易部署 • 高性能 • 低内存占用 • 云原生支持 •Java版本的Elasticsearch MCP服务</h4>
 
 [![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
 [![Quarkus](https://img.shields.io/badge/Quarkus-3.27.0-blue.svg)](https://quarkus.io/)
 [![MCP Server](https://img.shields.io/badge/MCP-1.6.1-green.svg)](https://quarkiverse.github.io/quarkiverse-docs/quarkus-mcp-server/dev/index.html)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://mit-license.org/)
+[![MCP Server](https://img.shields.io/badge/License-MIT-yellow.svg)]([License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg))
 
-**[📖 项目文档](#-项目介绍) • [🚀 快速开始](#-快速开始) • [📦 项目构建](#-项目构建) • [🛠️ 项目部署](#-项目部署) • [🔧 二次开发](#-二次开发)**
-
-</div>
+**[📖 项目文档](#-项目介绍) • [🔗 MCP连接](#-MCP连接)  [🚀 快速开始](#-快速开始) • [📦 项目构建](#-项目构建) • [🛠️ 项目部署](#-项目部署) • [🔧 二次开发](#-二次开发)**
 
 ---
 
@@ -21,29 +19,28 @@
 
 ### 🌟 基于Quarkus的轻量级Elasticsearch MCP服务
 
-</div>
-
 Elasticsearch MCP Server 是一个基于 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) 标准的高性能服务器实现，专门为Elasticsearch数据源提供AI助手交互能力。本项目采用 **Quarkus框架** 构建，具有以下核心优势：
 
 ### 🚀 核心特性
 
 | 特性 | 描述 |
 |------|------|
-| **⚡ 快速启动** | 基于Quarkus原生编译，毫秒级启动时间 |
-| **🧠 低内存占用** | 相比传统Spring Boot应用，内存使用减少85% |
-| **🔄 双协议支持** | 同时支持SSE和Streamable HTTP协议 |
-| **🛠️ 丰富的工具集** | 提供7种核心Elasticsearch操作工具 |
-| **🌐 云原生设计** | 专为Kubernetes和容器化环境优化 |
+| **⚡ 快速启动** | 基于Quarkus原生编译，毫秒级快速启动 |
+| **🧠 低内存占用** | 相比传统Spring Boot应用，内存使用减少85%，原生程序运行仅需要9MB，非原生13MB |
+| **🔄 双协议支持** | 同时支持SSE和Streamable HTTP协议，也可以支持studio |
+| **🛠️ 丰富的工具集** | 提供7种核心Elasticsearch查询工具 |
+| **🌐 云原生设计** | 专为Kubernetes和容器化环境优化，如果非云原生，直接部署也是非常容易的 |
 | **📦 快速打包** | 支持JVM和原生二进制两种部署模式 |
 
 ### 🎯 支持的工具功能
 
 - **🔍 健康检查** - 查询Elasticsearch集群健康状态
 - **📋 索引管理** - 列出所有索引和别名
-- **🗺️ 映射查询** - 获取索引的字段映射信息
+- **🗺️ 映射查询** - 获取索引的mapping信息
 - **📝 SQL查询** - 通过SQL语句查询Elasticsearch文档
 - **🔎 DSL搜索** - 使用Elasticsearch DSL进行高级搜索
 - **📄 文档查询** - 通过ID获取特定文档
+- 后续功能根据实际需求和issue持续更新...
 
 ---
 
@@ -51,11 +48,13 @@ Elasticsearch MCP Server 是一个基于 [Model Context Protocol (MCP)](https://
 
 ### 📋 环境要求
 
-- **Java 17+** - 推荐使用OpenJDK 17
+- **Java 17+** - 推荐使用JDK 17或更高
 - **Maven 3.8+** - 项目构建工具
-- **Elasticsearch 8.x/9.x** - 支持的Elasticsearch版本
+- **Elasticsearch 7.x/8.x/9.x** - 支持的Elasticsearch版本
 
 ### 🏃‍♂️ 立即运行
+
+- 默认会Elasticsearch连接http://localhost:9200, 如需要修改请参考：[🔧 快速配置](#-快速配置)
 
 ```bash
 # 克隆项目
@@ -74,16 +73,18 @@ cd elasticsearch-mcp-server
 在 `src/main/resources/application.properties` 中配置Elasticsearch连接：
 
 ```properties
-# Elasticsearch连接配置
-elasticsearch.host=localhost
-elasticsearch.port=9200
-elasticsearch.username=elastic
-elasticsearch.password=your_password
-
-# MCP服务器配置
-quarkus.mcp.server.name=elasticsearch-mcp-server
-quarkus.mcp.server.version=1.0.0
+# Elasticsearch连接配置, host缺省为http://localhost:9200，username和password如果需要可以配置
+elasticsearch.host=http://localhost:9200
+elasticsearch.username=<Your username>
+elasticsearch.password=<Your password>
 ```
+### 🔗 MCP连接
+
+- **streamable:** http://localhost:19000/mcp
+
+- **sse:** http://localhost:19000/mcp/sse
+
+  
 
 ---
 
@@ -91,9 +92,9 @@ quarkus.mcp.server.version=1.0.0
 
 ### 🏗️ 构建选项
 
-本项目基于 **Quarkus 3.27.0** 构建，提供两种构建模式：
+本项目基于 **Quarkus** 构建，提供两种构建模式：
 
-#### 1. JVM模式构建（推荐开发环境）
+#### 1. JVM模式构建（常用构建方式，无任何工具依赖）
 
 ```bash
 # 清理并打包
@@ -106,10 +107,10 @@ mvn clean package
 # target/lib/ - 依赖库目录
 ```
 
-#### 2. 原生模式构建（推荐生产环境）
+#### 2. 原生模式构建（如果需要云原生或对性能有极致要求）
 
 ```bash
-# 原生镜像构建（需要GraalVM）
+# 原生镜像构建（需要安装GraalVM）
 ./mvnw package -Dnative
 或者
 mvn package -Dnative
@@ -123,8 +124,8 @@ mvn package -Dnative
 
 | 构建模式 | 启动时间 | 内存占用 | 文件大小 | 适用场景 |
 |---------|---------|---------|---------|---------|
-| **JVM模式** | 2-3秒 | ≈15MB | ≈22MB | 开发环境/生产环境 |
-| **原生模式** | 1秒 | ≈9MB | ≈70MB | 开发环境/生产环境 |
+| **JVM模式** | 2-3秒 | ≈10MB | ≈22MB | 开发环境/生产环境 |
+| **原生模式** | 1秒 | ≈5MB | ≈70MB | 开发环境/生产环境 |
 
 ### 🔧 构建配置
 
@@ -177,9 +178,8 @@ docker build -t elasticsearch-mcp-server .
 # 运行容器
 docker run -i --rm \
   -p 8080:8080 \
-  -e ELASTICSEARCH_HOST=your-es-host \
-  -e ELASTICSEARCH_PORT=9200 \
-  -e ELASTICSEARCH_USERNAME=elastic \
+  -e ELASTICSEARCH_HOST=your-es-server-address \
+  -e ELASTICSEARCH_USERNAME=your-es-useranme \
   -e ELASTICSEARCH_PASSWORD=your_password \
   elasticsearch-mcp-server
 ```
@@ -204,22 +204,22 @@ spec:
         app: elasticsearch-mcp-server
     spec:
       containers:
-      - name: elasticsearch-mcp-server
-        image: elasticsearch-mcp-server:latest
-        ports:
-        - containerPort: 8080
-        env:
-        - name: ELASTICSEARCH_HOST
-          value: "elasticsearch-service"
-        - name: ELASTICSEARCH_PORT
-          value: "9200"
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        - name: elasticsearch-mcp-server
+          image: elasticsearch-mcp-server:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ELASTICSEARCH_HOST
+              value: "elasticsearch-service"
+            - name: ELASTICSEARCH_PORT
+              value: "9200"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
 ```
 
 #### 2. 部署到集群
@@ -334,19 +334,11 @@ public ToolResponse createIndex(
 ```properties
 # 服务器配置
 quarkus.http.port=8080
-quarkus.http.host=0.0.0.0
 
 # Elasticsearch配置
-elasticsearch.host=localhost
-elasticsearch.port=9200
-elasticsearch.scheme=http
+elasticsearch.host=http://localhost:9200
 elasticsearch.username=
 elasticsearch.password=
-
-# MCP配置
-quarkus.mcp.server.name=elasticsearch-mcp-server
-quarkus.mcp.server.version=1.0.0
-quarkus.mcp.server.sse-path=/mcp/sse
 ```
 
 #### 测试工具
