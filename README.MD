@@ -15,7 +15,7 @@
 
 ## 📖 项目介绍
 
-<div align="center">
+<div>
 
 ### 🌟 基于Quarkus的轻量级Elasticsearch MCP服务
 
