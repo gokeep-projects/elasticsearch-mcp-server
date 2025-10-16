@@ -2,12 +2,12 @@
 
 # 🔍 Elasticsearch MCP Server
 
-### <sup>快速打包 • 低内存占用 • Java版本的Elasticsearch MCP服务器</sup>
+### <sup>高性能 • 低内存占用 •云原生支持 •Java版本的Elasticsearch MCP服务</sup>
 
 [![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
 [![Quarkus](https://img.shields.io/badge/Quarkus-3.27.0-blue.svg)](https://quarkus.io/)
 [![MCP Server](https://img.shields.io/badge/MCP-1.6.1-green.svg)](https://quarkiverse.github.io/quarkiverse-docs/quarkus-mcp-server/dev/index.html)
-[![License](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+[![MCP Server](https://img.shields.io/badge/License-MIT-yellow.svg)]([License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg))
 
 **[📖 项目文档](#-项目介绍) • [🚀 快速开始](#-快速开始) • [📦 项目构建](#-项目构建) • [🛠️ 项目部署](#-项目部署) • [🔧 二次开发](#-二次开发)**
 
@@ -19,7 +19,7 @@
 
 <div align="center">
 
-### 🌟 基于Quarkus的轻量级Elasticsearch MCP服务器
+### 🌟 基于Quarkus的轻量级Elasticsearch MCP服务
 
 </div>
 
@@ -98,6 +98,8 @@ quarkus.mcp.server.version=1.0.0
 ```bash
 # 清理并打包
 ./mvnw clean package
+或者
+mvn clean package
 
 # 生成的文件
 # target/elasticsearch-mcp-server-1.0.0-runner.jar
@@ -109,6 +111,8 @@ quarkus.mcp.server.version=1.0.0
 ```bash
 # 原生镜像构建（需要GraalVM）
 ./mvnw package -Dnative
+或者
+mvn package -Dnative
 
 # 生成的文件
 # target/elasticsearch-mcp-server-1.0.0-runner
@@ -119,8 +123,8 @@ quarkus.mcp.server.version=1.0.0
 
 | 构建模式 | 启动时间 | 内存占用 | 文件大小 | 适用场景 |
 |---------|---------|---------|---------|---------|
-| **JVM模式** | 2-3秒 | 200-300MB | ~15MB | 开发环境 |
-| **原生模式** | 0.1秒 | 50-80MB | ~80MB | 生产环境 |
+| **JVM模式** | 2-3秒 | ≈15MB | ≈22MB | 开发环境/生产环境 |
+| **原生模式** | 1秒 | ≈9MB | ≈70MB | 开发环境/生产环境 |
 
 ### 🔧 构建配置
 
@@ -316,7 +320,7 @@ public ToolResponse createIndex(
 }
 ```
 
-### 📚 开发文档
+### 📚 二次开发文档
 
 #### 核心依赖
 
@@ -362,7 +366,7 @@ quarkus.mcp.server.sse-path=/mcp/sse
 
 ## 📄 许可证
 
-本项目采用 [Apache License 2.0](https://opensource.org/licenses/Apache-2.0) 许可证。
+本项目采用 [MIT]([MIT License](https://mit-license.org/)) 许可证。
 
 ## 🤝 贡献
 
