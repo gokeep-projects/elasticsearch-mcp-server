@@ -125,15 +125,13 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
      * @return ToolResponse 响应
      * @throws Exception 异常
      */
+    @Tool(description = """
+            CN: 通过文档ID查询索引文档信息
+            EN: get document by id from index
+            """)
     public ToolResponse getById(
-            @ToolArg(description = """
-                    CN: 索引名,
-                    EN: index name
-                    """) String indexName,
-            @ToolArg(description = """
-                    CN: 文档ID,
-                    EN: index document id
-                    """) String id) throws Exception {
+            @ToolArg(description = "索引名") String indexName,
+            @ToolArg(description = "文档ID") String id) throws Exception {
         HttpRequest request = buildRequest(Router.GET_BY_ID, indexName, id);
         String response = call(request);
         return ToolResponse.success(response);
