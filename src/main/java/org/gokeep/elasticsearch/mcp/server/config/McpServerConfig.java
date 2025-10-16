@@ -8,6 +8,8 @@ import io.smallrye.config.ConfigMapping;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
@@ -34,6 +36,7 @@ public class McpServerConfig {
 
 
     public static final String DEFAULT_ELASTIC_HOST_ADDRESS = "http://127.0.0.1:9200";
+    private static final Logger log = LoggerFactory.getLogger(McpServerConfig.class);
 
     /**
      * Elasticsearch配置
@@ -57,6 +60,7 @@ public class McpServerConfig {
      */
     @Singleton
     public HttpClient httpClient() {
+        log.info("elasticsearchConfig:{}", elasticsearchConfig);
         HttpClient.Builder builder = HttpClient.newBuilder();
         if (elasticsearchConfig.username().isPresent() && elasticsearchConfig.password().isPresent()) {
             builder.authenticator(new Authenticator() {
