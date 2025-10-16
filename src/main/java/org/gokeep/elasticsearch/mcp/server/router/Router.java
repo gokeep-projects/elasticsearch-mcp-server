@@ -35,18 +35,6 @@ public enum Router {
      * 根据索引ID查询文档
      */
     GET_BY_ID(HttpMethod.GET, "/%s/_doc/%s");
-    ;
-
-
-    /**
-     * 获取路径
-     *
-     * @param params 路径参数
-     * @return String 路径
-     */
-    public String generatePath(Object... params) {
-        return this.path.formatted(params);
-    }
 
     Router(HttpMethod method, String path) {
         this.method = method;

@@ -54,4 +54,10 @@ class ElasticsearchMcpServerApplicationTests {
         log.info("ToolResponse: {}", response);
     }
 
+    @Test
+    void testGetById() throws Exception {
+        ToolResponse response = elasticsearchMcpServer.getById("index_name", "document_id");
+        log.info("ToolResponse: {}", response);
+    }
+
 }
