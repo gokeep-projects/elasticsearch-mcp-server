@@ -1,15 +1,18 @@
+
+
 <p align="center">
   <img src="https://www.elastic.co/favicon.svg" alt="elasticsearch-mcp-server" hight="15%" width="15%">
 </p>
 <h1 align="center">Elasticsearch MCP Server<h1>
 <h4 align="center">极易部署 • 高性能 • 低内存占用 • 云原生支持 •Java版本的Elasticsearch MCP服务</h4>
-
 [![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
 [![Quarkus](https://img.shields.io/badge/Quarkus-3.27.0-blue.svg)](https://quarkus.io/)
 [![MCP Server](https://img.shields.io/badge/MCP-1.6.1-green.svg)](https://quarkiverse.github.io/quarkiverse-docs/quarkus-mcp-server/dev/index.html)
 ![MCP Server](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-**[📖 项目文档](#-项目介绍) • [🔗 MCP连接](#-MCP连接)  [🚀 快速开始](#-快速开始) • [📦 项目构建](#-项目构建) • [🛠️ 项目部署](#-项目部署) • [🔧 二次开发](#-二次开发)**
+
+
+**[📖 项目文档](#-项目介绍) • [🚀 快速开始](#-快速开始) • [🔗 MCP连接](#-MCP连接)  [🔧 启动参数](#-启动参数)   [📦 项目构建](#-项目构建) • [🛠️ 项目部署](#-项目部署) • [🔧 二次开发](#-二次开发)**
 
 ---
 
@@ -48,43 +51,101 @@ Elasticsearch MCP Server 是一个基于 [Model Context Protocol (MCP)](https://
 
 ### 📋 环境要求
 
-- **Java 17+** - 推荐使用JDK 17或更高
+- **Java 17+** - 推荐使用JDK 17 版本或更高，云原生打包需要grallvm版本jdk支持
 - **Maven 3.8+** - 项目构建工具
 - **Elasticsearch 7.x/8.x/9.x** - 支持的Elasticsearch版本
 
 ### 🏃‍♂️ 立即运行
 
-- 默认会Elasticsearch连接http://localhost:9200, 如需要修改请参考：[🔧 快速配置](#-快速配置)
+- 点击[Release](https://github.com/gokeep-projects/elasticsearch-mcp-server/releases)下载对应的启动包，如elasticsearch-mcp-server-runner.jar
 
-```bash
-# 克隆项目
-git clone https://github.com/gokeep-projects/elasticsearch-mcp-server.git
-cd elasticsearch-mcp-server
+  > [!CAUTION]
+  >
+  > **注意**：以下示例启动方式默认连接本地http://localhost:9200，未设置密码连接，如需要改动地址或设置密码，请参考[🔧 启动参数](#-启动参数)指定参数或环境变量来启动应用
 
-# 开发模式运行
-./mvnw quarkus:dev
+  #### 1. （Anything）elasticsearch-mcp-server-runner.jar 启动方式
 
-# 打包应用
-./mvnw package
+  > [!NOTE]
+  >
+  > 需要依赖本地环境安装JDK17+，但是该包不依赖任何架构，可以在任意架构运行
+
+  ```shell
+  java -jar elasticsearch-mcp-server-runner.jar
+  #该启动方式默认连接本地http://localhost:9200，未设置密码连接，如需要改动地址或设置密码请参考🔧快速配置指定参数或环境变量
+  ```
+
+  
+
+  #### 2. （Windows）elasticsearch-mcp-server-runner.exe 启动方式
+
+  ```powershell
+  ./elasticsearch-mcp-server-runner.exe
+  # 或者双击运行均可
+  ```
+
+  
+
+  #### 3. （Linux） elasticsearch-mcp-server-runner 启动方式
+
+  ```shell
+  chmod 755 elasticsearch-mcp-server-runner
+  ./elasticsearch-mcp-server-runner
+  ```
+
+
+
+### 🔗 MCP连接
+
+> [!NOTE]
+>
+> 启动完成后，会自动启动sse和streamable两种通信方式, 并默认监听 0.0.0.0:19000
+>
+> sse的endpoint为: /mcp/sse
+>
+> streamable的endpoint为：/mcp
+
+- **streamable:** http://{ip}:19000/mcp
+
+- **sse:** http://{ip}:19000/mcp/sse
+
+  
+
+### 🔧 启动参数
+
+> [!NOTE]
+>
+> 启动参数非必须的，比如需要连接远程elasticsearch，或者需要设置用户名密码，以下两种启动参数设置，二选一即可
+
+	#### 1. 命令行启动参数
+
 ```
-
-### 🔧 快速配置
-
-在 `src/main/resources/application.properties` 中配置Elasticsearch连接：
-
-```properties
-# Elasticsearch连接配置, host缺省为http://localhost:9200，username和password如果需要可以配置
-elasticsearch.host=http://localhost:9200
+elasticsearch.host=<your-es-server-address>
 elasticsearch.username=<Your username>
 elasticsearch.password=<Your password>
 ```
-### 🔗 MCP连接
 
-- **streamable:** http://localhost:19000/mcp
+该命令行方式启动示例入下：
 
-- **sse:** http://localhost:19000/mcp/sse
+```shell
+java -jar elasticsearch-mcp-server-runner.jar -Delasticsearch.host=http://localhost:9200 -Delasticsearch.username=<Your username> -Delasticsearch.password=<Your password>
+```
 
-  
+#### 2. 环境变量设置启动参数
+
+```she
+# 临时生效以下环境变量，如果写入/etc/profile，也不用每次指定)：
+export ELASTICSEARCH_HOST=<your-es-server-address>
+export ELASTICSEARCH_USERNAME=<your-es-useranme>
+export ELASTICSEARCH_PASSWORD=<your_password>
+```
+
+该环境变量方式启动示例入下(需要再指定配置，会自动读取环境变量值
+
+```shell
+java -jar elasticsearch-mcp-server-runner.jar
+```
+
+
 
 ---
 
@@ -103,7 +164,7 @@ elasticsearch.password=<Your password>
 mvn clean package
 
 # 生成的文件
-# target/elasticsearch-mcp-server-1.0.0-runner.jar
+# target/elasticsearch-mcp-server-runner.jar
 # target/lib/ - 依赖库目录
 ```
 
@@ -116,7 +177,7 @@ mvn clean package
 mvn package -Dnative
 
 # 生成的文件
-# target/elasticsearch-mcp-server-1.0.0-runner
+# target/elasticsearch-mcp-server-runner
 # 特点：启动更快，内存占用更低
 ```
 
@@ -127,110 +188,11 @@ mvn package -Dnative
 | **JVM模式** | 2-3秒 | ≈10MB | ≈22MB | 开发环境/生产环境 |
 | **原生模式** | 1秒 | ≈5MB | ≈70MB | 开发环境/生产环境 |
 
-### 🔧 构建配置
 
-在 `pom.xml` 中可以调整构建参数：
-
-```xml
-<!-- 原生编译配置 -->
-<profile>
-    <id>native</id>
-    <properties>
-        <quarkus.native.enabled>true</quarkus.native.enabled>
-        <quarkus.native.additional-build-args>
-            -H:ResourceConfigurationFiles=resources-config.json
-        </quarkus.native.additional-build-args>
-    </properties>
-</profile>
-```
 
 ---
 
 ## 🛠️ 项目部署
-
-### 🐳 Docker部署
-
-#### 1. 创建Dockerfile
-
-```dockerfile
-FROM quay.io/quarkus/ubi-quarkus-native-image:22.3-java17 AS build
-COPY --chown=quarkus:quarkus mvnw /code/mvnw
-COPY --chown=quarkus:quarkus .mvn /code/.mvn
-COPY --chown=quarkus:quarkus pom.xml /code/
-USER quarkus
-WORKDIR /code
-RUN ./mvnw package -Dnative
-
-FROM registry.access.redhat.com/ubi8/ubi-minimal
-WORKDIR /work/
-COPY --from=build /code/target/*-runner /work/application
-RUN chmod 775 /work
-EXPOSE 8080
-CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
-```
-
-#### 2. 构建并运行
-
-```bash
-# 构建Docker镜像
-docker build -t elasticsearch-mcp-server .
-
-# 运行容器
-docker run -i --rm \
-  -p 8080:8080 \
-  -e ELASTICSEARCH_HOST=your-es-server-address \
-  -e ELASTICSEARCH_USERNAME=your-es-useranme \
-  -e ELASTICSEARCH_PASSWORD=your_password \
-  elasticsearch-mcp-server
-```
-
-### ☸️ Kubernetes部署
-
-#### 1. 创建部署文件
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: elasticsearch-mcp-server
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: elasticsearch-mcp-server
-  template:
-    metadata:
-      labels:
-        app: elasticsearch-mcp-server
-    spec:
-      containers:
-        - name: elasticsearch-mcp-server
-          image: elasticsearch-mcp-server:latest
-          ports:
-            - containerPort: 8080
-          env:
-            - name: ELASTICSEARCH_HOST
-              value: "elasticsearch-service"
-            - name: ELASTICSEARCH_PORT
-              value: "9200"
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
-```
-
-#### 2. 部署到集群
-
-```bash
-# 应用配置
-kubectl apply -f k8s-deployment.yaml
-
-# 检查状态
-kubectl get pods -l app=elasticsearch-mcp-server
-```
 
 ### 🖥️ 传统部署
 
@@ -238,24 +200,30 @@ kubectl get pods -l app=elasticsearch-mcp-server
 
 ```bash
 # 上传jar包和lib目录到服务器
-scp target/elasticsearch-mcp-server-1.0.0-runner.jar user@server:/opt/
+scp target/elasticsearch-mcp-server-runner.jar user@server:/opt/
 scp -r target/lib user@server:/opt/
 
 # 在服务器上运行
-java -jar /opt/elasticsearch-mcp-server-1.0.0-runner.jar
+java -jar /opt/elasticsearch-mcp-server-runner.jar
 ```
 
 #### 2. 原生模式部署
 
 ```bash
 # 上传原生可执行文件
-scp target/elasticsearch-mcp-server-1.0.0-runner user@server:/opt/
+scp target/elasticsearch-mcp-server-runner user@server:/opt/
 
 # 在服务器上运行
-./elasticsearch-mcp-server-1.0.0-runner
+./elasticsearch-mcp-server-runner
 ```
 
 ---
+
+### 🐳 Docker部署
+
+敬请期待，当前版本仅支持传统部署，后续肯定考虑支持，如有需要，可以在issue说出您的需求
+
+
 
 ## 🔧 二次开发
 
@@ -356,9 +324,13 @@ elasticsearch.password=
 
 ---
 
+
+
 ## 📄 许可证
 
-本项目采用 [MIT]([MIT License](https://mit-license.org/)) 许可证。
+本项目采用 [MIT]([MIT License](https://mit-license.org/)) 许可证，支持任何商用和任何修改，无需版权声明
+
+
 
 ## 🤝 贡献
 
@@ -368,7 +340,11 @@ elasticsearch.password=
 
 <div align="center">
 
-### ⭐ 如果这个项目对你有帮助，请给个Star！
+### ⭐ 如果这个项目对你有帮助，请给个Star！不胜感激
+
+<svg height="32" aria-hidden="true" viewBox="0 0 24 24" version="1.1" width="32" data-view-component="true" class="octicon octicon-mark-github v-align-middle" src="https://github.com/gokeep-projects/elasticsearch-mcp-server/">
+    <path d="M12 1C5.923 1 1 5.923 1 12c0 4.867 3.149 8.979 7.521 10.436.55.096.756-.233.756-.522 0-.262-.013-1.128-.013-2.049-2.764.509-3.479-.674-3.699-1.292-.124-.317-.66-1.293-1.127-1.554-.385-.207-.936-.715-.014-.729.866-.014 1.485.797 1.691 1.128.99 1.663 2.571 1.196 3.204.907.096-.715.385-1.196.701-1.471-2.448-.275-5.005-1.224-5.005-5.432 0-1.196.426-2.186 1.128-2.956-.111-.275-.496-1.402.11-2.915 0 0 .921-.288 3.024 1.128a10.193 10.193 0 0 1 2.75-.371c.936 0 1.871.123 2.75.371 2.104-1.43 3.025-1.128 3.025-1.128.605 1.513.221 2.64.111 2.915.701.77 1.127 1.747 1.127 2.956 0 4.222-2.571 5.157-5.019 5.432.399.344.743 1.004.743 2.035 0 1.471-.014 2.654-.014 3.025 0 .289.206.632.756.522C19.851 20.979 23 16.854 23 12c0-6.077-4.922-11-11-11Z"></path>
+</svg>
 
 **[🔝 回到顶部](#-elasticsearch-mcp-server)**
 
