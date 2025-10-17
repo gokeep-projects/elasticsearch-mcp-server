@@ -1,13 +1,16 @@
+
+
 <p align="center">
   <img src="https://www.elastic.co/favicon.svg" alt="elasticsearch-mcp-server" hight="15%" width="15%">
 </p>
 <h1 align="center">Elasticsearch MCP Server<h1>
 <h4 align="center">极易部署 • 高性能 • 低内存占用 • 云原生支持 •Java版本的Elasticsearch MCP服务</h4>
-
 [![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
 [![Quarkus](https://img.shields.io/badge/Quarkus-3.27.0-blue.svg)](https://quarkus.io/)
 [![MCP Server](https://img.shields.io/badge/MCP-1.6.1-green.svg)](https://quarkiverse.github.io/quarkiverse-docs/quarkus-mcp-server/dev/index.html)
 ![MCP Server](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+
 
 **[📖 项目文档](#-项目介绍) • [🚀 快速开始](#-快速开始) • [🔗 MCP连接](#-MCP连接)  [🔧 启动参数](#-启动参数)   [📦 项目构建](#-项目构建) • [🛠️ 项目部署](#-项目部署) • [🔧 二次开发](#-二次开发)**
 
