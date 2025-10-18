@@ -7,8 +7,7 @@
     <version>1.0.0</version>
     <name>elasticsearch-mcp-server</name>
     <description>Elasticsearch MCP server</description>
-
-    <url/>
+    <url>https://github.com/gokeep-projects/elasticsearch-mcp-server</url>
     <licenses>
         <license/>
     </licenses>
@@ -128,6 +127,17 @@
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <executions>
+                    <execution>
+                        <id>detect</id>
+                        <goals><goal>detect</goal></goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
