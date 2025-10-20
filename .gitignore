@@ -34,3 +34,4 @@ build/
 target
 log
 logs
+/.mvn/apache-maven-3.9.11/
