@@ -6,7 +6,7 @@
 <h1 align="center">Elasticsearch MCP Server<h1>
 <h4 align="center">极易部署 • 高性能 • 低内存占用 • 云原生支持 •Java版本的Elasticsearch MCP服务</h4>
 
-[![Java 17](https://img.shields.io/badge/Java-17-blue.svg)](https://openjdk.org/projects/jdk/17/)
+[![Java 21](https://img.shields.io/badge/Java-21-blue.svg)](https://openjdk.org/projects/jdk/21/)
 [![Quarkus](https://img.shields.io/badge/Quarkus-3.27.0-blue.svg)](https://quarkus.io/)
 [![MCP Server](https://img.shields.io/badge/MCP-1.6.1-green.svg)](https://quarkiverse.github.io/quarkiverse-docs/quarkus-mcp-server/dev/index.html)
 ![MCP Server](https://img.shields.io/badge/License-MIT-yellow.svg)
@@ -52,7 +52,7 @@ Elasticsearch MCP Server 是一个基于 [Model Context Protocol (MCP)](https://
 
 ### 📋 环境要求
 
-- **Java 17+** - 推荐使用JDK 17 版本或更高，云原生打包需要grallvm版本jdk支持
+- **Java 17+** - 推荐使用JDK 21 版本或更高，云原生打包需要grallvm版本jdk支持
 - **Maven 3.8+** - 项目构建工具
 - **Elasticsearch 7.x/8.x/9.x** - 支持的Elasticsearch版本
 
@@ -68,7 +68,7 @@ Elasticsearch MCP Server 是一个基于 [Model Context Protocol (MCP)](https://
 
   > [!NOTE]
   >
-  > 需要依赖本地环境安装JDK17+，但是该包不依赖任何架构，可以在任意架构运行
+  > 需要依赖本地环境安装JDK21+，但是该包不依赖任何架构，可以在任意架构运行
 
   ```shell
   java -jar elasticsearch-mcp-server-runner.jar
@@ -296,7 +296,7 @@ public ToolResponse createIndex(
 - **Quarkus 3.27.0** - 核心框架
 - **quarkus-mcp-server-sse 1.6.1** - MCP服务器实现
 - **quarkus-rest-client-jackson** - REST客户端
-- **Java 17** - 编程语言
+- **Java 21** - 编程语言
 
 #### 配置参考
 
