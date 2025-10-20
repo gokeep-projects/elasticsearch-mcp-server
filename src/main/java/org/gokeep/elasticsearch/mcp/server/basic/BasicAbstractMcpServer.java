@@ -26,6 +26,10 @@ import static org.gokeep.elasticsearch.mcp.server.config.McpServerConfig.*;
 @ApplicationScoped
 public class BasicAbstractMcpServer {
 
+    static {
+        System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
+    }
+
     private static final Logger log = LoggerFactory.getLogger(BasicAbstractMcpServer.class);
     /**
      * HTTP请求客户端
@@ -53,7 +57,7 @@ public class BasicAbstractMcpServer {
     public HttpRequest.Builder defaultRequestBuilder() {
         return HttpRequest.newBuilder()
                 .header(CONTENT_TYPE_HEADER, APPLICATION_JSON_UTF8_JSON)
-                .timeout(Duration.ofSeconds(DEFAULT_REQUEST_TIMEOUT));
+                .timeout(Duration.ofSeconds(elasticsearchConfig.getRequestTimeout().orElse(DEFAULT_REQUEST_TIMEOUT)));
     }
 
     /**
@@ -199,9 +203,8 @@ public class BasicAbstractMcpServer {
      * @throws IOException          异常
      * @throws InterruptedException 异常
      */
-    public String call(HttpRequest request) throws IOException, InterruptedException {
-        log.info("Request: {}", request);
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+    public String callResponse(HttpRequest request) throws IOException, InterruptedException {
+        HttpResponse<String> response = call(request);
         if (response.statusCode() >= 200 && response.statusCode() < 300) {
             return response.body();
         } else {
@@ -210,4 +213,16 @@ public class BasicAbstractMcpServer {
         }
     }
 
+    /**
+     * 执行HttpRequest请求
+     *
+     * @param request 请求体
+     * @return HttpResponse 请求相应内容
+     * @throws IOException          异常
+     * @throws InterruptedException 异常
+     */
+    public HttpResponse<String> call(HttpRequest request) throws IOException, InterruptedException {
+        log.info("Request: {}", request);
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+    }
 }

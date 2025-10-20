@@ -7,6 +7,10 @@ import org.gokeep.elasticsearch.mcp.server.enmus.HttpMethod;
  */
 public enum Router {
     /**
+     * ping
+     */
+    PING(HttpMethod.GET, "/"),
+    /**
      * 健康检查
      */
     HEALTH(HttpMethod.GET, "/_cluster/health"),
@@ -30,7 +34,6 @@ public enum Router {
      * 通过SQL查询es文档
      */
     SQL(HttpMethod.POST, "/_sql"),
-
     /**
      * 根据索引ID查询文档
      */

@@ -1,9 +1,13 @@
 package org.gokeep.elasticsearch.mcp.server;
 
 import io.quarkiverse.mcp.server.*;
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.runtime.QuarkusApplication;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.gokeep.elasticsearch.mcp.server.basic.BasicAbstractMcpServer;
 import org.gokeep.elasticsearch.mcp.server.router.Router;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.http.HttpRequest;
 import java.util.Map;
@@ -12,7 +16,10 @@ import java.util.Map;
  * Elasticsearch mcp server
  */
 @ApplicationScoped
-public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
+public class ElasticsearchMcpServer extends BasicAbstractMcpServer implements QuarkusApplication {
+
+    private static final Logger log = LoggerFactory.getLogger(ElasticsearchMcpServer.class);
+
     /**
      * Elasticsearch健康检查
      *
@@ -25,7 +32,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             """)
     public ToolResponse health() throws Exception {
         HttpRequest request = buildRequest(Router.HEALTH);
-        String response = call(request);
+        String response = callResponse(request);
         return ToolResponse.success(response);
     }
 
@@ -41,7 +48,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             """)
     public ToolResponse listIndices() throws Exception {
         HttpRequest request = buildRequest(Router.LIST_INDICES);
-        String response = call(request);
+        String response = callResponse(request);
         return ToolResponse.success(response);
     }
 
@@ -57,7 +64,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             """)
     public ToolResponse listAliases() throws Exception {
         HttpRequest request = buildRequest(Router.LIST_ALIASES);
-        String response = call(request);
+        String response = callResponse(request);
         return ToolResponse.success(response);
     }
 
@@ -75,7 +82,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             """)
     public ToolResponse getMappings(@ToolArg(description = "索引名") String indexName) throws Exception {
         HttpRequest request = buildRequest(Router.GET_MAPPING, indexName);
-        String response = call(request);
+        String response = callResponse(request);
         return ToolResponse.success(response);
     }
 
@@ -92,7 +99,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             """)
     public ToolResponse sql(@ToolArg(description = "sql语句，用于elasticsearch查询") String sql) throws Exception {
         HttpRequest request = buildRequest(Router.SQL, Map.of("query", sql));
-        String response = call(request);
+        String response = callResponse(request);
         return ToolResponse.success(response);
     }
 
@@ -112,10 +119,9 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
     public ToolResponse search(@ToolArg(description = "索引名") String indexName,
                                @ToolArg(description = "dsl查询语句") Map<String, Object> dsl) throws Exception {
         HttpRequest request = buildRequest(Router.SEARCH, dsl, indexName);
-        String response = call(request);
+        String response = callResponse(request);
         return ToolResponse.success(response);
     }
-
 
     /**
      * 通过文档ID查询索引文档信息
@@ -133,7 +139,22 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer {
             @ToolArg(description = "索引名") String indexName,
             @ToolArg(description = "文档ID") String id) throws Exception {
         HttpRequest request = buildRequest(Router.GET_BY_ID, indexName, id);
-        String response = call(request);
+        String response = callResponse(request);
         return ToolResponse.success(response);
+    }
+
+    @Override
+    public int run(String... args) throws Exception {
+        return 0;
+    }
+
+
+    /**
+     * 主应用启动，适用于本地开发模式
+     *
+     * @param args 参数
+     */
+    public static void main(String[] args) {
+        Quarkus.run(args);
     }
 }
