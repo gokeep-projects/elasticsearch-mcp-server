@@ -98,6 +98,7 @@ public class ElasticsearchMcpServer extends BasicAbstractMcpServer implements Qu
             EN: search elasticsearch document by sql
             """)
     public ToolResponse sql(@ToolArg(description = "sql语句，用于elasticsearch查询") String sql) throws Exception {
+        log.info("Elasticsearch search by sql: {}", sql);
         HttpRequest request = buildRequest(Router.SQL, Map.of("query", sql));
         String response = callResponse(request);
         return ToolResponse.success(response);
