@@ -18,6 +18,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.4
     - name: Cache Maven packages
       uses: actions/cache@v4
       with:
@@ -26,8 +30,7 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build native image for Linux x86
       run: |
-        chmod +x mvnw
-        ./mvnw package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-17
+        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-17
     - name: Upload Linux x86 binary
       uses: actions/upload-artifact@v4
       with:
@@ -43,6 +46,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.4
     - name: Cache Maven packages
       uses: actions/cache@v4
       with:
@@ -51,7 +58,7 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build native image for Windows x86
       run: |
-        ./mvnw package -Dnative -DskipTests
+        mvn package -Dnative -DskipTests
     - name: Upload Windows x86 binary
       uses: actions/upload-artifact@v4
       with:
@@ -67,6 +74,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.4
     - name: Cache Maven packages
       uses: actions/cache@v4
       with:
@@ -79,8 +90,7 @@ jobs:
         platforms: arm64
     - name: Build native image for Linux ARM64
       run: |
-        chmod +x mvnw
-        ./mvnw package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:arm64-jdk-17
+        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:arm64-jdk-17
     - name: Upload Linux ARM64 binary
       uses: actions/upload-artifact@v4
       with:
