@@ -1,0 +1,105 @@
+name: Build Multi-Platform Binaries
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [ published ]
+
+jobs:
+  build-linux-x86:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    - name: Build native image for Linux x86
+      run: |
+        chmod +x mvnw
+        ./mvnw package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-17
+    - name: Upload Linux x86 binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: elasticsearch-mcp-server-linux-x86
+        path: target/elasticsearch-mcp-server-*-runner
+
+  build-windows-x86:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    - name: Build native image for Windows x86
+      run: |
+        ./mvnw package -Dnative -DskipTests
+    - name: Upload Windows x86 binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: elasticsearch-mcp-server-windows-x86
+        path: target/elasticsearch-mcp-server-*-runner.exe
+
+  build-linux-arm64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    - name: Set up QEMU for cross-compilation
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: arm64
+    - name: Build native image for Linux ARM64
+      run: |
+        chmod +x mvnw
+        ./mvnw package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:arm64-jdk-17
+    - name: Upload Linux ARM64 binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: elasticsearch-mcp-server-linux-arm64
+        path: target/elasticsearch-mcp-server-*-runner
+
+  release:
+    if: github.event_name == 'release'
+    needs: [build-linux-x86, build-windows-x86, build-linux-arm64]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+    - name: Upload release assets
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          artifacts/elasticsearch-mcp-server-linux-x86/elasticsearch-mcp-server-*-runner
+          artifacts/elasticsearch-mcp-server-windows-x86/elasticsearch-mcp-server-*-runner.exe
+          artifacts/elasticsearch-mcp-server-linux-arm64/elasticsearch-mcp-server-*-runner
