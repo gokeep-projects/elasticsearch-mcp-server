@@ -67,7 +67,7 @@ jobs:
         gu install native-image
     - name: Build native image for Windows x86
       run: |
-        mvn package -Dnative -DskipTests
+        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=ghcr.io/graalvm/native-image-community:ol9-java17
     - name: Upload Windows x86 binary
       uses: actions/upload-artifact@v4
       with:
