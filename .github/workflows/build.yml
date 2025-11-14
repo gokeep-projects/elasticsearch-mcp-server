@@ -34,7 +34,7 @@ jobs:
         gu install native-image
     - name: Build native image for Linux x86
       run: |
-        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=ghcr.io/graalvm/native-image-community:ol9-java17 -Dquarkus.native.additional-build-args="--no-fallback,-H:+ReportExceptionStackTraces,-J-Xmx8g,-H:+UnlockExperimentalVMOptions,-H:+ReportUnsupportedElementsAtRuntime"
+        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel:22.3-java17
     - name: Upload Linux x86 binary
       uses: actions/upload-artifact@v4
       with:
@@ -62,12 +62,12 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     - name: Install native-image component
-      shell: powershell
+      shell: cmd
       run: |
-        & gu install native-image
+        gu install native-image
     - name: Build native image for Windows x86
       run: |
-        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=ghcr.io/graalvm/native-image-community:21 -Dquarkus.native.additional-build-args="--no-fallback,-H:+ReportExceptionStackTraces,-J-Xmx8g,-H:+UnlockExperimentalVMOptions,-H:+ReportUnsupportedElementsAtRuntime"
+        mvn package -Dnative -DskipTests
     - name: Upload Windows x86 binary
       uses: actions/upload-artifact@v4
       with:
@@ -103,7 +103,7 @@ jobs:
         platforms: arm64
     - name: Build native image for Linux ARM64
       run: |
-        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=ghcr.io/graalvm/native-image-community:ol9-java17-arm64 -Dquarkus.native.additional-build-args="--no-fallback,-H:+ReportExceptionStackTraces,-J-Xmx8g,-H:+UnlockExperimentalVMOptions,-H:+ReportUnsupportedElementsAtRuntime"
+        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.0
     - name: Upload Linux ARM64 binary
       uses: actions/upload-artifact@v4
       with:
