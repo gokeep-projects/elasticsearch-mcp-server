@@ -1,2 +1,2 @@
 #!/bin/bash
-../mvnw.cmd clean package -DskipTests -Dnative
+../mvnw clean package -DskipTests -Dnative
