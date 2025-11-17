@@ -33,7 +33,7 @@ jobs:
       run: |
         gu install native-image
     - name: Build native image for Linux x86
-      run: ./mvnw package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-native-image:22.3-java17
+      run: ./mvnw package -Dnative -DskipTests
 
     - name: Upload Linux x86 binary
       uses: actions/upload-artifact@v4
@@ -103,7 +103,7 @@ jobs:
         platforms: arm64
     - name: Build native image for Linux ARM64
       run: |
-        mvn package -Dnative -DskipTests -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-native-image:22.3-java17
+        mvn package -Dnative -DskipTests
 
     - name: Upload Linux ARM64 binary
       uses: actions/upload-artifact@v4
